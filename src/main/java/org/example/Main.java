@@ -1,17 +1,50 @@
 package org.example;
 
-//TIP 코드를 <b>실행</b>하려면 <shortcut actionId="Run"/>을(를) 누르거나
-// 에디터 여백에 있는 <icon src="AllIcons.Actions.Execute"/> 아이콘을 클릭하세요.
-public class Main {
-    public static void main(String[] args) {
-        //TIP 캐럿을 강조 표시된 텍스트에 놓고 <shortcut actionId="ShowIntentionActions"/>을(를) 누르면
-        // IntelliJ IDEA이(가) 수정을 제안하는 것을 확인할 수 있습니다.
-        System.out.printf("Hello and welcome!");
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.*;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP <shortcut actionId="Debug"/>을(를) 눌러 코드 디버그를 시작하세요. 1개의 <icon src="AllIcons.Debugger.Db_set_breakpoint"/> 중단점을 설정해 드렸습니다
-            // 언제든 <shortcut actionId="ToggleLineBreakpoint"/>을(를) 눌러 중단점을 더 추가할 수 있습니다.
-            System.out.println("i = " + i);
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder stringBuilder = new StringBuilder();
+
+        int N = Integer.parseInt(bufferedReader.readLine()); // 자료구조 개수
+
+        int A[] = new int[N]; // 자료구조 형태 (queue or stack)
+        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
+        for (int i = 0; i < N; i++) {
+            A[i] = Integer.parseInt(st.nextToken()); //
         }
+
+        int B[] = new int[N]; // 각 자료구조에 들어갈 첫 원소
+        st = new StringTokenizer(bufferedReader.readLine());
+        for (int i = 0; i < N; i++) {
+            B[i] = Integer.parseInt(st.nextToken());
+        }
+
+        int M = Integer.parseInt(bufferedReader.readLine()); // 삽입할 값 길이
+
+        int C[] = new int[M]; // 삽입할 값들
+        st = new StringTokenizer(bufferedReader.readLine());
+        for (int i = 0; i < M; i++) {
+            C[i] = Integer.parseInt(st.nextToken());
+        }
+
+        ArrayDeque<Integer> queueStack = new ArrayDeque<>();
+        for (int i = 0; i < N; i++) {
+            if (A[i] == 0) { // 큐일 때만 값 관리
+                queueStack.add(B[i]);
+            }
+        }
+
+        for (int i = 0; i < M; i++) {
+            queueStack.addFirst(C[i]);
+            stringBuilder.append(queueStack.pollLast()).append(" ");
+        }
+
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        System.out.println(stringBuilder);
     }
+
 }
