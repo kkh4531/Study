@@ -5,42 +5,50 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /*
-6. 중복문자제거
+7. 회문 문자열
 설명
 
-소문자로 된 한개의 문자열이 입력되면 중복된 문자를 제거하고 출력하는 프로그램을 작성하세요.
+앞에서 읽을 때나 뒤에서 읽을 때나 같은 문자열을 회문 문자열이라고 합니다.
 
-중복이 제거된 문자열의 각 문자는 원래 문자열의 순서를 유지합니다.
+문자열이 입력되면 해당 문자열이 회문 문자열이면 "YES", 회문 문자열이 아니면 “NO"를 출력하는 프로그램을 작성하세요.
+
+단 회문을 검사할 때 대소문자를 구분하지 않습니다.
 
 
 입력
 
-첫 줄에 문자열이 입력됩니다. 문자열의 길이는 100을 넘지 않는다.
+첫 줄에 길이 100을 넘지 않는 공백이 없는 문자열이 주어집니다.
 
 
 출력
 
-첫 줄에 중복문자가 제거된 문자열을 출력합니다.
+첫 번째 줄에 회문 문자열인지의 결과를 YES 또는 NO로 출력합니다.
 
 
 예시 입력 1
 
-ksekkset
+gooG
 예시 출력 1
 
-kset
+YES
  */
 public class Main {
 
     public static String solution(String str) {
-        String res = "";
+        String reverseStr = "";
+        for (int i = str.length() - 1; i >= 0; i--) {
+            reverseStr += str.charAt(i);
+        }
+        boolean check = true;
         for (int i = 0; i < str.length(); i++) {
-            String temp = String.valueOf(str.charAt(i));
-            if (!res.contains(temp)) {
-                res = res + temp;
+            if (!(str.charAt(i) == reverseStr.charAt(i))) {
+                check = false;
             }
         }
-        return res;
+        if (check) {
+            return "YES";
+        }
+        return "NO";
     }
 
     public static void main(String[] args) throws Exception {
@@ -48,7 +56,7 @@ public class Main {
 
         String str = bufferedReader.readLine();
 
-        System.out.println(solution(str));
+        System.out.println(solution(str.toLowerCase()));
     }
 
 }
