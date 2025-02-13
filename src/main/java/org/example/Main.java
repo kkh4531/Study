@@ -34,32 +34,25 @@ study
  */
 public class Main {
 
-    public static String solution(String str[]) {
-        int max = Integer.MIN_VALUE;
-        String res = "";
-        for (String s : str) {
-            if (s.length() > max) {
-                max = s.length();
+    public static StringBuilder solution(int N, BufferedReader bufferedReader) throws Exception {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < N; i++) {
+            String temp = bufferedReader.readLine();
+            for (int j = temp.length(); j > 0; j--) {
+                stringBuilder.append(temp.charAt(j - 1));
             }
+            stringBuilder.append('\n');
         }
-
-        ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < str.length; i++) {
-            if (str[i].length() == max) {
-                list.add(str[i]);
-            }
-        }
-
-        res = list.get(0);
-        return res;
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        return stringBuilder;
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        String str[] = bufferedReader.readLine().split(" ");
+        int N = Integer.parseInt(bufferedReader.readLine());
 
-        System.out.println(solution(str));
+        System.out.println(solution(N, bufferedReader));
     }
 
 }
