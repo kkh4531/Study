@@ -34,13 +34,11 @@ public class Main {
 
     public static StringBuilder solution(String str) {
         StringBuilder res = new StringBuilder();
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            if (c >= 'a' && c <= 'z') { // 소문자면
-                c = (char) (c - 32);
-                res.append(c);
+        for (char c : str.toCharArray()) {
+            if (Character.isLowerCase(c)) {
+                res.append(Character.toUpperCase(c));
             } else {
-                res.append((char) (c + 32));
+                res.append(Character.toLowerCase(c));
             }
         }
         return res;
