@@ -5,50 +5,39 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /*
-3. 문장 속 단어
+6. 중복문자제거
 설명
 
-한 개의 문장이 주어지면 그 문장 속에서 가장 긴 단어를 출력하는 프로그램을 작성하세요.
+소문자로 된 한개의 문자열이 입력되면 중복된 문자를 제거하고 출력하는 프로그램을 작성하세요.
 
-문장속의 각 단어는 공백으로 구분됩니다.
+중복이 제거된 문자열의 각 문자는 원래 문자열의 순서를 유지합니다.
 
 
 입력
 
-첫 줄에 길이가 100을 넘지 않는 한 개의 문장이 주어집니다. 문장은 영어 알파벳으로만 구성되어 있습니다.
+첫 줄에 문자열이 입력됩니다. 문자열의 길이는 100을 넘지 않는다.
 
 
 출력
 
-첫 줄에 가장 긴 단어를 출력한다. 가장 길이가 긴 단어가 여러개일 경우 문장속에서 가장 앞쪽에 위치한
-
-단어를 답으로 합니다.
+첫 줄에 중복문자가 제거된 문자열을 출력합니다.
 
 
 예시 입력 1
 
-it is time to study
+ksekkset
 예시 출력 1
 
-study
+kset
  */
 public class Main {
 
-    public static StringBuilder solution(String str) {
-        ArrayList<Character> list = new ArrayList<>();
+    public static String solution(String str) {
+        String res = "";
         for (int i = 0; i < str.length(); i++) {
-            char temp = str.charAt(i);
-            if ((temp >= 'A' && temp <= 'Z') || (temp >= 'a' && temp <= 'z')) { // 알파벳인 경우
-                list.add(temp);
-            }
-        }
-        StringBuilder res = new StringBuilder();
-        for (int i = 0; i < str.length(); i++) {
-            char temp = str.charAt(i);
-            if ((temp >= 'A' && temp <= 'Z') || (temp >= 'a' && temp <= 'z')) {
-                res.append(list.remove(list.size() - 1));
-            } else {
-                res.append(temp);
+            String temp = String.valueOf(str.charAt(i));
+            if (!res.contains(temp)) {
+                res = res + temp;
             }
         }
         return res;
