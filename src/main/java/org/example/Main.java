@@ -34,25 +34,32 @@ study
  */
 public class Main {
 
-    public static StringBuilder solution(int N, BufferedReader bufferedReader) throws Exception {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < N; i++) {
-            String temp = bufferedReader.readLine();
-            for (int j = temp.length(); j > 0; j--) {
-                stringBuilder.append(temp.charAt(j - 1));
+    public static StringBuilder solution(String str) {
+        ArrayList<Character> list = new ArrayList<>();
+        for (int i = 0; i < str.length(); i++) {
+            char temp = str.charAt(i);
+            if ((temp >= 'A' && temp <= 'Z') || (temp >= 'a' && temp <= 'z')) { // 알파벳인 경우
+                list.add(temp);
             }
-            stringBuilder.append('\n');
         }
-        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-        return stringBuilder;
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < str.length(); i++) {
+            char temp = str.charAt(i);
+            if ((temp >= 'A' && temp <= 'Z') || (temp >= 'a' && temp <= 'z')) {
+                res.append(list.remove(list.size() - 1));
+            } else {
+                res.append(temp);
+            }
+        }
+        return res;
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = Integer.parseInt(bufferedReader.readLine());
+        String str = bufferedReader.readLine();
 
-        System.out.println(solution(N, bufferedReader));
+        System.out.println(solution(str));
     }
 
 }
