@@ -54,9 +54,20 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        String str = bufferedReader.readLine();
+        int N = Integer.parseInt(bufferedReader.readLine());
 
-        System.out.println(solution(str.toLowerCase()));
+        for (int i = 0; i < N; i++) {
+            String temp = bufferedReader.readLine();
+            int size = (int) Math.sqrt(temp.length());
+            char c[][] = new char[size][size];
+            //RST EEO TCP
+            //temp를 c[][]에 할당하면 됨.
+            for (int j = 0; j < size; j++) {
+                for (int k = 0; k < size; k++) {
+                    //c[j][k] = temp.
+                }
+            }
+        }
     }
 
 }
