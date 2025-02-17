@@ -37,8 +37,16 @@ public class Main {
     public static StringBuilder solution(int N, BufferedReader bufferedReader) throws Exception {
         StringBuilder res = new StringBuilder();
         for (int i = 0; i < N; i++) {
-            String temp = new StringBuilder(bufferedReader.readLine()).reverse().toString();
-            res.append(temp).append('\n');
+            char c[] = bufferedReader.readLine().toCharArray();
+            int lt = 0, rt = c.length - 1;
+            while (lt < rt) { // lt가 rt보다 적다면 연산 수행 즉 lt==rt, lt > rt가 되면 반복문 수행 x
+                char temp = c[rt];
+                c[rt] = c[lt];
+                c[lt] = temp;
+                lt++;
+                rt--;
+            }
+            res.append(String.valueOf(c)).append('\n');
         }
         return res;
     }
