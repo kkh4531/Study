@@ -33,24 +33,16 @@ g0en2T0s8eSoft
 208
  */
 public class Main {
-
+    // indexOf 메소드는 파라미터가 처음으로 나타나는 위치의 인덱스를 리턴한다.
+    // 즉 indexOf가 i랑 같을 때 해당 알파벳이 처음으로 나타나는 것이다.
     public static String solution(String str) {
-        char c[] = str.toCharArray();
-        int lt = 0, rt = c.length - 1;
-        while (lt < rt) {
-            if (!Character.isLetter(c[lt])) {
-                lt++;
-            } else if (!Character.isLetter(c[rt])) {
-                rt--;
-            } else {
-                char temp = c[lt];
-                c[lt] = c[rt];
-                c[rt] = temp;
-                lt++;
-                rt--;
+        String res = "";
+        for (int i = 0; i < str.length(); i++) {
+            if (str.indexOf(str.charAt(i)) == i) {
+                res += str.charAt(i);
             }
         }
-        return String.valueOf(c);
+        return res;
     }
 
     public static void main(String[] args) throws Exception {
