@@ -34,28 +34,29 @@ g0en2T0s8eSoft
  */
 public class Main {
 
-    public static StringBuilder solution(int N, BufferedReader bufferedReader) throws Exception {
-        StringBuilder res = new StringBuilder();
-        for (int i = 0; i < N; i++) {
-            char c[] = bufferedReader.readLine().toCharArray();
-            int lt = 0, rt = c.length - 1;
-            while (lt < rt) { // lt가 rt보다 적다면 연산 수행 즉 lt==rt, lt > rt가 되면 반복문 수행 x
-                char temp = c[rt];
-                c[rt] = c[lt];
-                c[lt] = temp;
+    public static String solution(String str) {
+        char c[] = str.toCharArray();
+        int lt = 0, rt = c.length - 1;
+        while (lt < rt) {
+            if (!Character.isLetter(c[lt])) {
+                lt++;
+            } else if (!Character.isLetter(c[rt])) {
+                rt--;
+            } else {
+                char temp = c[lt];
+                c[lt] = c[rt];
+                c[rt] = temp;
                 lt++;
                 rt--;
             }
-            res.append(String.valueOf(c)).append('\n');
         }
-        return res;
+        return String.valueOf(c);
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-
-        int N = Integer.parseInt(bufferedReader.readLine());
-        System.out.println(solution(N, bufferedReader));
+        String str = bufferedReader.readLine();
+        System.out.println(solution(str));
     }
 
 }
