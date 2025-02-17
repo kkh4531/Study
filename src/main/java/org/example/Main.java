@@ -5,69 +5,56 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /*
-7. 회문 문자열
+9. 숫자만 추출
 설명
 
-앞에서 읽을 때나 뒤에서 읽을 때나 같은 문자열을 회문 문자열이라고 합니다.
+문자와 숫자가 섞여있는 문자열이 주어지면 그 중 숫자만 추출하여 그 순서대로 자연수를 만듭니다.
 
-문자열이 입력되면 해당 문자열이 회문 문자열이면 "YES", 회문 문자열이 아니면 “NO"를 출력하는 프로그램을 작성하세요.
+만약 “tge0a1h205er”에서 숫자만 추출하면 0, 1, 2, 0, 5이고 이것을 자연수를 만들면 1205이 됩니다.
 
-단 회문을 검사할 때 대소문자를 구분하지 않습니다.
+추출하여 만들어지는 자연수는 100,000,000을 넘지 않습니다.
 
 
 입력
 
-첫 줄에 길이 100을 넘지 않는 공백이 없는 문자열이 주어집니다.
+첫 줄에 숫자가 섞인 문자열이 주어집니다. 문자열의 길이는 100을 넘지 않습니다.
 
 
 출력
 
-첫 번째 줄에 회문 문자열인지의 결과를 YES 또는 NO로 출력합니다.
+첫 줄에 자연수를 출력합니다.
 
 
 예시 입력 1
 
-gooG
+g0en2T0s8eSoft
 예시 출력 1
 
-YES
+208
  */
 public class Main {
 
-    public static String solution(String str) {
-        String reverseStr = "";
-        for (int i = str.length() - 1; i >= 0; i--) {
-            reverseStr += str.charAt(i);
-        }
-        boolean check = true;
-        for (int i = 0; i < str.length(); i++) {
-            if (!(str.charAt(i) == reverseStr.charAt(i))) {
-                check = false;
+    public static int solution(String str) {
+        String temp = "";
+        for (char c : str.toCharArray()) {
+            if (Character.isDigit(c)) {
+                temp += c;
             }
         }
-        if (check) {
-            return "YES";
+
+        if (temp.length() == 0) {
+            return 0;
+        } else {
+            return Integer.parseInt(temp);
         }
-        return "NO";
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = Integer.parseInt(bufferedReader.readLine());
+        String str = bufferedReader.readLine();
 
-        for (int i = 0; i < N; i++) {
-            String temp = bufferedReader.readLine();
-            int size = (int) Math.sqrt(temp.length());
-            char c[][] = new char[size][size];
-            //RST EEO TCP
-            //temp를 c[][]에 할당하면 됨.
-            for (int j = 0; j < size; j++) {
-                for (int k = 0; k < size; k++) {
-                    //c[j][k] = temp.
-                }
-            }
-        }
+        System.out.println(solution(str));
     }
 
 }
