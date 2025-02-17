@@ -33,21 +33,20 @@ g0en2T0s8eSoft
 208
  */
 public class Main {
-    // indexOf 메소드는 파라미터가 처음으로 나타나는 위치의 인덱스를 리턴한다.
-    // 즉 indexOf가 i랑 같을 때 해당 알파벳이 처음으로 나타나는 것이다.
     public static String solution(String str) {
-        String res = "";
-        for (int i = 0; i < str.length(); i++) {
-            if (str.indexOf(str.charAt(i)) == i) {
-                res += str.charAt(i);
+        // 내장 라이브러리 함수 사용하지 않은 풀이
+        // i번째하고 마지막인덱스를 비교하며 회문인지 확인
+        for (int i = 0; i < str.length() / 2; i++) {
+            if (!(str.charAt(i) == str.charAt(str.length() - i - 1))) {
+                return "NO";
             }
         }
-        return res;
+        return "YES";
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        String str = bufferedReader.readLine();
+        String str = bufferedReader.readLine().toLowerCase();
         System.out.println(solution(str));
     }
 
