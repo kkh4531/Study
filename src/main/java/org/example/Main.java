@@ -34,19 +34,24 @@ g0en2T0s8eSoft
  */
 public class Main {
 
-    public static int solution(String str) {
-        String temp = "";
-        for (char c : str.toCharArray()) {
-            if (Character.isDigit(c)) {
-                temp += c;
+    public static String solution(String str) {
+        String answer = "";
+        int max = Integer.MIN_VALUE;
+        int pos;
+        while((pos = str.indexOf(' ')) != -1) { // 공백을 발견하는 인덱스 위치(pos) 즉 공백을 발견한 인덱스 위치가 -1이 아니면 true
+            String temp = str.substring(0, pos);
+            int size = temp.length();
+            if (size > max) {
+                max = size;
+                answer = temp;
             }
+            str = str.substring(pos + 1); // 원본 str에서 pos는 공백이니까 pos +1부터해서 문자열을 자른다.
+        } // 여기까지 한다면 마지막 단어는 검사를 못한다 왜냐면 study 뒤에는 공백이 없기 때문에
+        // 그러면 마지막 단어도 검사해야한다면
+        if (str.length() > max) { // 현재 str은 맨 마지막 단어를 가지고 있다.
+            answer = str;
         }
-
-        if (temp.length() == 0) {
-            return 0;
-        } else {
-            return Integer.parseInt(temp);
-        }
+        return answer;
     }
 
     public static void main(String[] args) throws Exception {
