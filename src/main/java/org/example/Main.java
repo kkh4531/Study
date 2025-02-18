@@ -34,14 +34,12 @@ g0en2T0s8eSoft
  */
 public class Main {
     public static String solution(String str) {
-        // 내장 라이브러리 함수 사용하지 않은 풀이
-        // i번째하고 마지막인덱스를 비교하며 회문인지 확인
-        for (int i = 0; i < str.length() / 2; i++) {
-            if (!(str.charAt(i) == str.charAt(str.length() - i - 1))) {
-                return "NO";
-            }
+        str = str.toLowerCase().replaceAll("[^a-z]", ""); // [^A-Z]란 알파벳 대문자 a부터 z가 아닌 애들은 빈 문자열로 바꾸겠다.
+        String temp = new StringBuilder(str).reverse().toString();
+        if (str.equals(temp)) {
+            return "YES";
         }
-        return "YES";
+        return "NO";
     }
 
     public static void main(String[] args) throws Exception {
