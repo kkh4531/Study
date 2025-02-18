@@ -41,28 +41,18 @@ KST3SE2KFK3DJ2G2
 public class Main {
     public static StringBuilder solution(String str) {
         StringBuilder res = new StringBuilder();
-        char old = str.charAt(0);
+        str += " ";
         int cnt = 1;
-        for (int i = 1; i < str.length(); i++) {
-            char c = str.charAt(i); // 현재 문자
-            if (old == c) { // 전 문자와 현재 문자가 같은 경우
+        for (int i = 0; i < str.length() - 1; i++) { // 현재 i랑 i+1일 비교할 때 빈 문자열을 str에 더하면 마지막 인덱스도 확인할 수 있다.
+            if (str.charAt(i) == str.charAt(i + 1)) { // 같은 문자일 때는
                 cnt++;
-            } else { // 전 문자와 현재 문자가 다를 경우
+            } else { // 문자가 달라졌을 때는
                 if (cnt == 1) {
-                    res.append(old);
+                    res.append(str.charAt(i));
                 } else {
-                    res.append(old).append(cnt);
+                    res.append(str.charAt(i)).append(cnt);
                 }
                 cnt = 1;
-            }
-            old = c;
-            if (i == str.length() - 1) { // 마지막 인덱스
-                // 마지막 인덱스가 하나인 경우
-                if (cnt == 1) {
-                    res.append(old);
-                } else { // 마지막 인덱스가 계속 이어지는 경우
-                    res.append(old).append(cnt);
-                }
             }
         }
         return res;
