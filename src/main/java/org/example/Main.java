@@ -5,47 +5,63 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /*
-9. 숫자만 추출
+10. 가장 짧은 문자거리
 설명
 
-문자와 숫자가 섞여있는 문자열이 주어지면 그 중 숫자만 추출하여 그 순서대로 자연수를 만듭니다.
-
-만약 “tge0a1h205er”에서 숫자만 추출하면 0, 1, 2, 0, 5이고 이것을 자연수를 만들면 1205이 됩니다.
-
-추출하여 만들어지는 자연수는 100,000,000을 넘지 않습니다.
+한 개의 문자열 s와 문자 t가 주어지면 문자열 s의 각 문자가 문자 t와 떨어진 최소거리를 출력하는 프로그램을 작성하세요.
 
 
 입력
 
-첫 줄에 숫자가 섞인 문자열이 주어집니다. 문자열의 길이는 100을 넘지 않습니다.
+첫 번째 줄에 문자열 s와 문자 t가 주어진다. 문자열과 문자는 소문자로만 주어집니다.
+
+문자열의 길이는 100을 넘지 않는다.
 
 
 출력
 
-첫 줄에 자연수를 출력합니다.
+첫 번째 줄에 각 문자열 s의 각 문자가 문자 t와 떨어진 거리를 순서대로 출력한다.
 
 
 예시 입력 1
 
-g0en2T0s8eSoft
+teachermode e
 예시 출력 1
 
-208
+1 0 1 2 1 0 1 2 2 1 0
  */
 public class Main {
-    public static String solution(String str) {
-        str = str.toLowerCase().replaceAll("[^a-z]", ""); // [^A-Z]란 알파벳 대문자 a부터 z가 아닌 애들은 빈 문자열로 바꾸겠다.
-        String temp = new StringBuilder(str).reverse().toString();
-        if (str.equals(temp)) {
-            return "YES";
+    public static StringBuilder solution(String str1, String str2) {
+        ArrayList<Integer> indexes = new ArrayList<>();
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < str1.length(); i++) {
+            if (str1.charAt(i) == str2.charAt(0)) {
+                indexes.add(i); // 문자 t의 인덱스 위치를 가지고 있는 리스트 정의 완료
+            }
         }
-        return "NO";
+
+        for (int i = 0; i < str1.length(); i++) {
+            if (str1.charAt(i) == str2.charAt(0)) { // 문자열 s의 인덱스 i가 문자 t와 같다면 그 자체니깐 0
+                res.append(0).append(" ");
+                continue;
+            }
+            int min = Integer.MAX_VALUE;
+            for (int j = 0; j < indexes.size(); j++) { // 현재 문자열 s의 i번째인 문자와 문자 t의 인덱스들과 비교 후 최솟값 찾는다.
+                int temp = Math.abs(i - indexes.get(j));
+                if (temp < min) {
+                    min = temp;
+                }
+            }
+            res.append(min).append(" ");
+        }
+        res.deleteCharAt(res.length() - 1);
+        return res;
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        String str = bufferedReader.readLine().toLowerCase();
-        System.out.println(solution(str));
+        String str[] = bufferedReader.readLine().split(" ");
+        System.out.println(solution(str[0], str[1]));
     }
 
 }
