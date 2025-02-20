@@ -7,19 +7,10 @@ import java.util.*;
 public class Main {
 
     public static String solution(String str[]) {
-        String temp[] = new String[str.length];
         String res = "";
         for (int i = 0; i < str.length; i++) {
-            for (int j = 0; j < 7; j++) {
-                if (str[i].charAt(j) == '#') {
-                    temp[i] += "1";
-                } else {
-                    temp[i] += "0";
-                }
-            }
-            temp[i] = temp[i].substring(4);
-            int decimal = Integer.parseInt(temp[i], 2);
-            res += (char) decimal;
+            String temp = str[i].replace('#', '1').replace('*', '0');
+            res += (char) Integer.parseInt(temp, 2);
         }
 
         return res;
