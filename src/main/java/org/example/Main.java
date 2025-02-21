@@ -5,66 +5,58 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /*
-유클리드 호제법 (Euclidean Algorithm)
-유클리드 호제법이라고도 불리는 유클리드 알고리즘은 둘 이상의 정수의 최대공약수(GCD)를 구하는 알고리즘이다.
+2. 보이는 학생
+설명
+
+선생님이 N명의 학생을 일렬로 세웠습니다. 일렬로 서 있는 학생의 키가 앞에서부터 순서대로 주어질 때, 맨 앞에 서 있는
+
+선생님이 볼 수 있는 학생의 수를 구하는 프로그램을 작성하세요. (앞에 서 있는 사람들보다 크면 보이고, 작거나 같으면 보이지 않습니다.)
 
 
-유클리드 호제법은
+입력
 
-큰 수(num1)와 작은 수(num2) 사이의 최대 공약수는 큰 수를 작은 수로 나눈 나머지(R)와 작은 수(num2) 사이의 최대 공약수와 같다는 점을 반복하여 문제를 해결한다.
-
-
-
-기본적인 방법은 다음과 같다.
+첫 줄에 정수 N(5<=N<=100,000)이 입력된다. 그 다음줄에 N명의 학생의 키가 앞에서부터 순서대로 주어진다.
 
 
-큰 수(num1)에서 작은 수(num2)를 나눈다.
-나머지가 0이 아니라면, 나머지와 작은 수(num2)로 1번부터 다시 시작한다.
- 1~ 2 과정을 반복해 나머지가 0이라면, 그 수가 최대 공약수이다.
+출력
+
+선생님이 볼 수 있는 최대학생수를 출력한다.
 
 
-예를 들어, 21과 49 가 있다. mod 연산을 진행하면,
+예시 입력 1
 
-49 mod 21 = 7
+8
+130 135 148 140 145 150 150 153
+예시 출력 1
 
-나머지가 0이 아니므로,  나머지인 7과 작은 수인 21로 mod 연산을 진행한다.
-
-21 mod 7 = 0
-
-
-
-나머지가 0이므로 21과 49의 최대 공약수는 7이다.
+5
  */
 public class Main {
 
+    public static int solution(int arr[]) {
+        int res = 0;
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] > max) {
+                max = arr[i];
+                res++;
+            }
+        }
+        return res;
+    }
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        String[] str = bufferedReader.readLine().split(":");
+        int N = Integer.parseInt(bufferedReader.readLine());
 
-        int n = Integer.parseInt(str[0]), m = Integer.parseInt(str[1]);
-        int max = n;
-        int min = m;
-        if (m > n) {
-
+        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
+        int arr[] = new int[st.countTokens()];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
         }
-        int gcd = gcd(n, m);
 
-        System.out.println(n / gcd + ":" + m / gcd);
+        System.out.println(solution(arr));
     }
 
-    public static int gcd(int n, int m) {
-        int max = n;
-        int min = m;
-        if (m > n) {
-            max = m;
-            min = n;
-        }
-        if (max % min == 0) {
-            return min;
-        } else {
-            return gcd(min, max % min);
-        }
-    }
 
 }
