@@ -5,58 +5,76 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /*
-5. 소수(에라토스테네스 체)
+6. 뒤집은 소수
 설명
 
-자연수 N이 입력되면 1부터 N까지의 소수의 개수를 출력하는 프로그램을 작성하세요.
+N개의 자연수가 입력되면 각 자연수를 뒤집은 후 그 뒤집은 수가 소수이면 그 소수를 출력하는 프로그램을 작성하세요.
 
-만약 20이 입력되면 1부터 20까지의 소수는 2, 3, 5, 7, 11, 13, 17, 19로 총 8개입니다.
+예를 들어 32를 뒤집으면 23이고, 23은 소수이다. 그러면 23을 출력한다. 단 910를 뒤집으면 19로 숫자화 해야 한다.
+
+첫 자리부터의 연속된 0은 무시한다.
 
 
 입력
 
-첫 줄에 자연수의 개수 N(2<=N<=200,000)이 주어집니다.
+첫 줄에 자연수의 개수 N(3<=N<=100)이 주어지고, 그 다음 줄에 N개의 자연수가 주어진다.
+
+각 자연수의 크기는 100,000를 넘지 않는다.
 
 
 출력
 
-첫 줄에 소수의 개수를 출력합니다.
+첫 줄에 뒤집은 소수를 출력합니다. 출력순서는 입력된 순서대로 출력합니다.
 
 
 예시 입력 1
 
-20
+9
+32 55 62 20 250 370 200 30 100
 예시 출력 1
 
-8
+23 2 73 2 3
  */
 public class Main {
-//에라토스테네스의 체
-    //소수가 되는 수를 찾고 그 수의 배수들을 싹 다 없앤다.
 
-    //true이면 소수x false이면 소수
-    public static int solution(int N) {
-        int res = 0;
-        for (int i = 2; i <= N; i++) {
-            if (!arr[i]) { // false이면 즉 아직 소수인지 검증이 안된 얘면 or 소수이면
-                for (int j = i + i; j <= N; j += i) {
-                    arr[j] = true;
-                }
-                res++;
+    public static StringBuilder solution(int N, String str[]) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < N; i++) {
+            char c[] = str[i].toCharArray();
+            int lt = 0, rt = c.length - 1;
+            while (lt < rt) {
+                char temp = c[lt];
+                c[lt] = c[rt];
+                c[rt] = temp;
+                lt++;
+                rt--;
+            }
+            String tmp = new String(c);
+            if (isPrime(Integer.parseInt(tmp))) {
+                sb.append(Integer.parseInt(tmp)).append(" ");
             }
         }
-        return res;
+        return sb;
     }
 
-    public static boolean arr[];
+    public static boolean isPrime(int n) {
+        if (n == 0 || n == 1) {
+            return false;
+        }
+        for (int i = 2; i < n; i++) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(bufferedReader.readLine());
-
-        System.out.println(solution(N));
-
+        String str[] = bufferedReader.readLine().split(" ");
+        System.out.print(solution(N, str));
     }
 
 }
