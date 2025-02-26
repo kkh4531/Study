@@ -5,60 +5,51 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /*
-7. 점수계산
+8. 등수구하기
 설명
 
-OX 문제는 맞거나 틀린 두 경우의 답을 가지는 문제를 말한다.
+N명의 학생의 국어점수가 입력되면 각 학생의 등수를 입력된 순서대로 출력하는 프로그램을 작성하세요.
 
-여러 개의 OX 문제로 만들어진 시험에서 연속적으로 답을 맞히는 경우에는 가산점을 주기 위해서 다음과 같이 점수 계산을 하기로 하였다.
+같은 점수가 입력될 경우 높은 등수로 동일 처리한다.
 
-1번 문제가 맞는 경우에는 1점으로 계산한다. 앞의 문제에 대해서는 답을 틀리다가 답이 맞는 처음 문제는 1점으로 계산한다.
-
-또한, 연속으로 문제의 답이 맞는 경우에서 두 번째 문제는 2점, 세 번째 문제는 3점, ..., K번째 문제는 K점으로 계산한다. 틀린 문제는 0점으로 계산한다.
-
-예를 들어, 아래와 같이 10 개의 OX 문제에서 답이 맞은 문제의 경우에는 1로 표시하고, 틀린 경우에는 0으로 표시하였을 때,
-
-점수 계산은 아래 표와 같이 계산되어, 총 점수는 1+1+2+3+1+2=10 점이다.
-
-Image1.jpg
-
-시험문제의 채점 결과가 주어졌을 때, 총 점수를 계산하는 프로그램을 작성하시오.
+즉 가장 높은 점수가 92점인데 92점이 3명 존재하면 1등이 3명이고 그 다음 학생은 4등이 된다.
 
 
 입력
 
-첫째 줄에 문제의 개수 N (1 ≤ N ≤ 100)이 주어진다. 둘째 줄에는 N개 문제의 채점 결과를 나타내는 0 혹은 1이 빈 칸을 사이에 두고 주어진다.
-
-0은 문제의 답이 틀린 경우이고, 1은 문제의 답이 맞는 경우이다.
+첫 줄에 N(3<=N<=100)이 입력되고, 두 번째 줄에 국어점수를 의미하는 N개의 정수가 입력된다.
 
 
 출력
 
-첫째 줄에 입력에서 주어진 채점 결과에 대하여 가산점을 고려한 총 점수를 출력한다.
+입력된 순서대로 등수를 출력한다.
 
 
 예시 입력 1
 
-10
-1 0 1 1 1 0 0 1 1 0
+5
+87 89 92 100 76
 예시 출력 1
 
-10
+4 3 2 1 5
  */
 public class Main {
 
-    public static int solution(int N, String str[]) {
-        int res = 0;
-        int cnt = 0;
+    public static StringBuilder solution(int N, String str[]) {
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < N; i++) {
-            if (str[i].equals("1")) {
-                cnt++;
-                res += cnt;
-            } else {
-                cnt = 0;
+            int temp = Integer.parseInt(str[i]);
+            int grade = 1;
+            for (int j = 0; j < N; j++) {
+                if (j != i) { // 자기 자신이랑 비교하는 게 아니라면
+                    if (temp < Integer.parseInt(str[j])) { // 자기 자신보다 점수가 높다면
+                        grade++;
+                    }
+                }
             }
+            sb.append(grade).append(" ");
         }
-        return res;
+        return sb;
     }
 
     public static void main(String[] args) throws Exception {
