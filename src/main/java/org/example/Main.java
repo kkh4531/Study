@@ -5,68 +5,60 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /*
-6. 뒤집은 소수
+7. 점수계산
 설명
 
-N개의 자연수가 입력되면 각 자연수를 뒤집은 후 그 뒤집은 수가 소수이면 그 소수를 출력하는 프로그램을 작성하세요.
+OX 문제는 맞거나 틀린 두 경우의 답을 가지는 문제를 말한다.
 
-예를 들어 32를 뒤집으면 23이고, 23은 소수이다. 그러면 23을 출력한다. 단 910를 뒤집으면 19로 숫자화 해야 한다.
+여러 개의 OX 문제로 만들어진 시험에서 연속적으로 답을 맞히는 경우에는 가산점을 주기 위해서 다음과 같이 점수 계산을 하기로 하였다.
 
-첫 자리부터의 연속된 0은 무시한다.
+1번 문제가 맞는 경우에는 1점으로 계산한다. 앞의 문제에 대해서는 답을 틀리다가 답이 맞는 처음 문제는 1점으로 계산한다.
+
+또한, 연속으로 문제의 답이 맞는 경우에서 두 번째 문제는 2점, 세 번째 문제는 3점, ..., K번째 문제는 K점으로 계산한다. 틀린 문제는 0점으로 계산한다.
+
+예를 들어, 아래와 같이 10 개의 OX 문제에서 답이 맞은 문제의 경우에는 1로 표시하고, 틀린 경우에는 0으로 표시하였을 때,
+
+점수 계산은 아래 표와 같이 계산되어, 총 점수는 1+1+2+3+1+2=10 점이다.
+
+Image1.jpg
+
+시험문제의 채점 결과가 주어졌을 때, 총 점수를 계산하는 프로그램을 작성하시오.
 
 
 입력
 
-첫 줄에 자연수의 개수 N(3<=N<=100)이 주어지고, 그 다음 줄에 N개의 자연수가 주어진다.
+첫째 줄에 문제의 개수 N (1 ≤ N ≤ 100)이 주어진다. 둘째 줄에는 N개 문제의 채점 결과를 나타내는 0 혹은 1이 빈 칸을 사이에 두고 주어진다.
 
-각 자연수의 크기는 100,000를 넘지 않는다.
+0은 문제의 답이 틀린 경우이고, 1은 문제의 답이 맞는 경우이다.
 
 
 출력
 
-첫 줄에 뒤집은 소수를 출력합니다. 출력순서는 입력된 순서대로 출력합니다.
+첫째 줄에 입력에서 주어진 채점 결과에 대하여 가산점을 고려한 총 점수를 출력한다.
 
 
 예시 입력 1
 
-9
-32 55 62 20 250 370 200 30 100
+10
+1 0 1 1 1 0 0 1 1 0
 예시 출력 1
 
-23 2 73 2 3
+10
  */
 public class Main {
 
-    public static StringBuilder solution(int N, String str[]) {
-        StringBuilder sb = new StringBuilder();
+    public static int solution(int N, String str[]) {
+        int res = 0;
+        int cnt = 0;
         for (int i = 0; i < N; i++) {
-            char c[] = str[i].toCharArray();
-            int lt = 0, rt = c.length - 1;
-            while (lt < rt) {
-                char temp = c[lt];
-                c[lt] = c[rt];
-                c[rt] = temp;
-                lt++;
-                rt--;
-            }
-            String tmp = new String(c);
-            if (isPrime(Integer.parseInt(tmp))) {
-                sb.append(Integer.parseInt(tmp)).append(" ");
+            if (str[i].equals("1")) {
+                cnt++;
+                res += cnt;
+            } else {
+                cnt = 0;
             }
         }
-        return sb;
-    }
-
-    public static boolean isPrime(int n) {
-        if (n == 0 || n == 1) {
-            return false;
-        }
-        for (int i = 2; i < n; i++) {
-            if (n % i == 0) {
-                return false;
-            }
-        }
-        return true;
+        return res;
     }
 
     public static void main(String[] args) throws Exception {
