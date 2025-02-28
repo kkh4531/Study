@@ -5,14 +5,18 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /*
-9. 격자판 최대합
+10. 봉우리
 설명
 
-5*5 격자판에 아래롸 같이 숫자가 적혀있습니다.
+지도 정보가 N*N 격자판에 주어집니다. 각 격자에는 그 지역의 높이가 쓰여있습니다.
+
+각 격자판의 숫자 중 자신의 상하좌우 숫자보다 큰 숫자는 봉우리 지역입니다. 봉우리 지역이 몇 개 있는 지 알아내는 프로그램을 작성하세요.
+
+격자의 가장자리는 0으로 초기화 되었다고 가정한다.
+
+만약 N=5 이고, 격자판의 숫자가 다음과 같다면 봉우리의 개수는 10개입니다.
 
 Image1.jpg
-
-N*N의 격자판이 주어지면 각 행의 합, 각 열의 합, 두 대각선의 합 중 가 장 큰 합을 출력합니다.
 
 
 입력
@@ -24,73 +28,54 @@ N*N의 격자판이 주어지면 각 행의 합, 각 열의 합, 두 대각선�
 
 출력
 
-최대합을 출력합니다.
+봉우리의 개수를 출력하세요.
 
 
 예시 입력 1
 
 5
-10 13 10 12 15
-12 39 30 23 11
-11 25 50 53 15
-19 27 29 37 27
-19 13 30 13 19
+5 3 7 2 3
+3 7 1 6 1
+7 2 5 3 4
+4 3 6 4 1
+8 7 3 5 2
 예시 출력 1
 
-155
+10
  */
 public class Main {
 
-    public static int solution(int N, BufferedReader bufferedReader) throws Exception {
-        int arr[][] = new int[N][N];
-        for (int i = 0; i < N; i++) {
-            String inputs[] = bufferedReader.readLine().split(" ");
-            for (int j = 0; j < N; j++) {
-                arr[i][j] = Integer.parseInt(inputs[j]);
+    public static int solution(int N, int arr[][]) {
+        int res = 0;
+        for (int i = 1; i < (N + 2) - 1; i++) {
+            for (int j = 1; j < (N + 2) - 1; j++) {
+                int present = arr[i][j];
+                int left = arr[i][j - 1];
+                int right = arr[i][j + 1];
+                int up = arr[i - 1][j];
+                int below = arr[i + 1][j];
+                if ((present > left) && (present > right) && (present > up) && (present > below)) {
+                    res++;
+                }
             }
         }
-        int max = Integer.MIN_VALUE;
-        for (int i = 0; i < N; i++) { // 행의 합
-            int sum = 0;
-            for (int j = 0; j < N; j++) {
-                sum += arr[i][j];
-            }
-            if (sum > max) {
-                max = sum;
-            }
-        }
-        for (int i = 0; i < N; i++) { // 열의 합
-            int sum = 0;
-            for (int j = 0; j < N; j++) {
-                sum += arr[j][i];
-            }
-            if (sum > max) {
-                max = sum;
-            }
-        }
-        int sum = 0;
-        for (int i = 0; i < N; i++) {
-            sum += arr[i][i];
-        }
-        if (sum > max) {
-            max = sum;
-        }
-        sum = 0;
-        for (int i = 0; i < N; i++) {
-            sum += arr[i][N - i - 1];
-        }
-        if (sum > max) {
-            max = sum;
-        }
-
-        return max;
+        return res;
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(bufferedReader.readLine());
-        System.out.print(solution(N, bufferedReader));
+
+        int arr[][] = new int[N + 2][N + 2];
+        StringTokenizer st;
+        for (int i = 1; i < (N + 2) - 1; i++) {
+            st = new StringTokenizer(bufferedReader.readLine());
+            for (int j = 1; j < (N + 2) - 1; j++) {
+                arr[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+        System.out.println(solution(N, arr));
     }
 
 }
