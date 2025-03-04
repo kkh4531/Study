@@ -56,7 +56,7 @@ public class Main {
                 for (int k = 0; k < 4; k++) {
                     int nx = i + dx[k]; // 현재 인덱스의 12시부터 시작. 시계 방향으로 k=1일 때는 3시방향 k=2일 때는 6시 방향... 행
                     int ny = j + dy[k]; // 열
-                    if (nx >= 0 && nx < n && ny >= 0 && ny < n && arr[nx][ny] > arr[i][j]) { // ArrayIndexOutOfBoundsException을 피하기 위해선 nx, ny가 -1이나 n 이상이면 안됨, 시계 방향으로 돌면서 현재 인덱스보다 값이 큰 게 있으면 봉우리가 아니므로 false
+                    if (nx >= 0 && nx < n && ny >= 0 && ny < n && arr[nx][ny] >= arr[i][j]) { // ArrayIndexOutOfBoundsException을 피하기 위해선 nx, ny가 -1이나 n 이상이면 안됨, 시계 방향으로 돌면서 현재 인덱스보다 값이 큰 게 있으면 봉우리가 아니므로 false
                         flag = false;
                         break;
                     }
