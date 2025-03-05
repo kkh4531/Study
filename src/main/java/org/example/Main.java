@@ -41,22 +41,20 @@ A, B 두 개의 집합이 주어지면 두 집합의 공통 원소를 추출하�
  */
 public class Main {
 
-    public static StringBuilder solution(int n, int m, StringTokenizer st, StringTokenizer st2) {
-        HashSet<Integer> set = new HashSet<>();
+    public static StringBuilder solution(int n, int m, int a[], int b[]) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < n; i++) {
-            set.add(Integer.parseInt(st.nextToken()));
-        }
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < m; i++) {
-            int temp = Integer.parseInt(st2.nextToken());
-            if (!set.add(temp)) {
-                list.add(temp);
+        Arrays.sort(a); // 투 포인터를 쓰려면 정렬이 돼있어야 한다.
+        Arrays.sort(b);
+        int pa = 0, pb = 0;
+        while (pa < n && pb < m) {
+            if (a[pa] == b[pb]) { // 같을 경우 둘 다 ++ 시켜준다. 안해줘도 출력은 똑같지만 연산 시간이 더 걸린다.
+                sb.append(a[pa++]).append(" ");
+                pb++;
+            } else if (a[pa] < b[pb]) { // 숫자가 더 작은 애를 ++ 시킨다.
+                pa++;
+            } else {
+                pb++;
             }
-        }
-        Collections.sort(list);
-        for (int i = 0; i < list.size(); i++) {
-            sb.append(list.get(i)).append(" ");
         }
         return sb;
     }
@@ -66,10 +64,17 @@ public class Main {
 
         int N = Integer.parseInt(bufferedReader.readLine());
         StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
+        int a[] = new int[N];
+        for (int i = 0; i < N; i++) {
+            a[i] = Integer.parseInt(st.nextToken());
+        }
         int M = Integer.parseInt(bufferedReader.readLine());
         StringTokenizer st2 = new StringTokenizer(bufferedReader.readLine());
-
-        System.out.println(solution(N, M, st, st2));
+        int b[] = new int[M];
+        for (int i = 0; i < M; i++) {
+            b[i] = Integer.parseInt(st2.nextToken());
+        }
+        System.out.println(solution(N, M, a, b));
     }
 
 }
