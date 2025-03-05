@@ -41,19 +41,24 @@ import java.util.*;
  */
 public class Main {
 
-    public static StringBuilder solution(int n, int m, StringTokenizer st, StringTokenizer st2) {
-        int arr[] = new int[n + m];
-        for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-        }
-        for (int i = n; i < n + m; i++) {
-            arr[i] = Integer.parseInt(st2.nextToken());
-        }
-        Arrays.sort(arr);
+    public static StringBuilder solution(int n, int m, int a[], int b[]) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < arr.length; i++) {
-            sb.append(arr[i]).append(" ");
+        int pa = 0, pb = 0;
+        while (pa < n && pb < m) {
+            if (a[pa] > b[pb]) { // a[pa]가 클 경우에만 출력
+                sb.append(b[pb++]).append(" ");
+            } else { // b[pb]가 클 때 출력 + a[pa]랑 b[pb]가 같은 경우도 b[pb]를 출력하고 ++
+                sb.append(a[pa++]).append(" ");
+            }
         }
+        //이제 어느 한 쪽은 배열의 끝까지 도달했다. 그러면 나머지 남은 배열을 쭈루룩 그대로 갖다 붙인다.
+        while (pa < n) { // 배열 b가 먼저 다 끝났다면 a 배열 나머지들을 출력할 것이다.
+            sb.append(a[pa++]).append(" ");
+        }
+        while (pb < m) { // 배열 a가 먼저 다 끝났다면 b 배열 나머지들을 출력할 것이다.
+            sb.append(b[pb++]).append(" ");
+        }
+        // a,b 중 누가 먼저 끝났는 지 알 수 없으니 둘 다 반복문 실행한 것. 끝난 쪽은 반복문이 실행되지 않겠지?
         return sb;
     }
 
@@ -61,11 +66,18 @@ public class Main {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(bufferedReader.readLine());
+        int a[] = new int[N];
         StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
+        for (int i = 0; i < N; i++) {
+            a[i] = Integer.parseInt(st.nextToken());
+        }
         int M = Integer.parseInt(bufferedReader.readLine());
-        StringTokenizer st2 = new StringTokenizer(bufferedReader.readLine());
-
-        System.out.println(solution(N, M, st, st2));
+        int b[] = new int[M];
+        st = new StringTokenizer(bufferedReader.readLine());
+        for (int i = 0 ; i < M; i++) {
+            b[i] = Integer.parseInt(st.nextToken());
+        }
+        System.out.println(solution(N, M, a, b));
     }
 
 }
