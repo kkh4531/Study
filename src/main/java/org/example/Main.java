@@ -5,79 +5,74 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /*
-4. 연속 부분수열
+5. 연속된 자연수의 합
 설명
 
-N개의 수로 이루어진 수열이 주어집니다.
+N입력으로 양의 정수 N이 입력되면 2개 이상의 연속된 자연수의 합으로 정수 N을 표현하는 방법의 가짓수를 출력하는 프로그램을 작성하세요.
 
-이 수열에서 연속부분수열의 합이 특정숫자 M이 되는 경우가 몇 번 있는지 구하는 프로그램을 작성하세요.
+만약 N=15이면
 
-만약 N=8, M=6이고 수열이 다음과 같다면
+7+8=15
 
-1 2 1 3 1 1 1 2
+4+5+6=15
 
-합이 6이 되는 연속부분수열은 {2, 1, 3}, {1, 3, 1, 1}, {3, 1, 1, 1}로 총 3가지입니다.
+1+2+3+4+5=15
+
+와 같이 총 3가지의 경우가 존재한다.
 
 
 입력
 
-첫째 줄에 N(1≤N≤100,000), M(1≤M≤100,000,000)이 주어진다.
-
-수열의 원소값은 1,000을 넘지 않는 자연수이다.
+첫 번째 줄에 양의 정수 N(7<=N<1000)이 주어집니다.
 
 
 출력
 
-첫째 줄에 경우의 수를 출력한다.
+첫 줄에 총 경우수를 출력합니다.
 
 
 예시 입력 1
 
-8 6
-1 2 1 3 1 1 1 2
+15
 예시 출력 1
 
 3
  */
 public class Main {
-    public static int solution(int n, int m, int arr[]) {
-        int sum = 0;
+    public static int solution(int n) {
         int cnt = 0;
 
-        int temp = 0;
+        int arr[]=  new int[n];
         for (int i = 0; i < n; i++) {
-            if (sum == m) {
+            arr[i] = i + 1;
+        }
+
+        int sum = 0;
+        int temp = 0;
+        for (int i = 0; i < n - 1; i++) {
+            sum += arr[i];
+            if (sum == n) {
                 cnt++;
-                sum -= arr[temp];
-                temp += 1;
-                sum += arr[i];
-            } else if (sum > m) {
-                sum -= arr[temp];
-                i -= 1;
-                temp += 1;
-            } else {
-                sum += arr[i];
+                sum -= arr[temp++];
+            } else if (sum > n) {
+                while (sum >= n) {
+                    sum -= arr[temp++];
+                    if (sum == n) {
+                        cnt++;
+                    }
+                }
             }
         }
 
-        if (sum == m) { // 마지막에 더해진 애는 검사가 안 이루어져서 검사해야함.
-            cnt++;
-        }
         return cnt;
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
-        int arr[] = new int[n];
-        st = new StringTokenizer(bufferedReader.readLine());
-        for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-        }
-        System.out.println(solution(n, m, arr));
+        int n = Integer.parseInt(bufferedReader.readLine());
+
+        System.out.println(solution(n));
     }
 
 }
