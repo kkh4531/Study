@@ -2,47 +2,49 @@ package org.example;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.util.*;
 
 public class Main {
-
-    public static StringBuilder solution(int n, int k, int arr[]) {
-        StringBuilder sb = new StringBuilder();
-        HashMap<Integer, Integer> map = new HashMap<>();
-
-        for (int i = 0; i < k; i++) {
-            map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
+    public static int solution(String s, String t) {
+        String str = "";
+        int cnt = 0;
+        for (int i = 0; i < t.length(); i++) {
+            str += s.charAt(i);
         }
-        sb.append(map.size()).append(" ");
-
-        int lt = 0;
-        for (int i = k; i < n; i++) {
-            map.put(arr[lt], map.get(arr[lt]) - 1);
-            if (map.get(arr[lt]) == 0) {
-                map.remove(arr[lt]);
+        if (isAnagram(t, str)) {
+            cnt++;
+        }
+        int lt = 1;
+        for (int i = t.length(); i < s.length(); i++) {
+            str = s.substring(lt++, i + 1);
+            if (isAnagram(t, str)) {
+                cnt++;
             }
-            map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
-            lt++;
-            sb.append(map.size()).append(" ");
         }
-        sb.deleteCharAt(sb.length() - 1);
-        return sb;
+        return cnt;
+    }
+
+    public static boolean isAnagram(String target, String str) {
+        char targetChar[] = target.toCharArray();
+        Arrays.sort(targetChar);
+        char strToChar[] = str.toCharArray();
+        Arrays.sort(strToChar);
+        for (int i = 0; i < target.length(); i++) {
+            if (targetChar[i] != strToChar[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
+        String s = bufferedReader.readLine();
+        String t = bufferedReader.readLine();
 
-        st = new StringTokenizer(bufferedReader.readLine());
-        int arr[] = new int[n];
-        for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-        }
-
-        System.out.println(solution(n, k, arr));
+        System.out.println(solution(s, t));
     }
 
 }
