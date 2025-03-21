@@ -6,45 +6,52 @@ import java.math.BigInteger;
 import java.util.*;
 
 public class Main {
-    public static int solution(String s, String t) {
-        String str = "";
-        int cnt = 0;
-        for (int i = 0; i < t.length(); i++) {
-            str += s.charAt(i);
-        }
-        if (isAnagram(t, str)) {
-            cnt++;
-        }
-        int lt = 1;
-        for (int i = t.length(); i < s.length(); i++) {
-            str = s.substring(lt++, i + 1);
-            if (isAnagram(t, str)) {
-                cnt++;
+    public static int solution(int n, int k, int arr[]) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 0; i < n - 2; i++) {
+            for (int j = i + 1; j < n - 1; j++) {
+                for (int s = j + 1; s < n; s++) {
+                    list.add(arr[i] + arr[j] + arr[s]);
+                }
             }
         }
-        return cnt;
-    }
-
-    public static boolean isAnagram(String target, String str) {
-        char targetChar[] = target.toCharArray();
-        Arrays.sort(targetChar);
-        char strToChar[] = str.toCharArray();
-        Arrays.sort(strToChar);
-        for (int i = 0; i < target.length(); i++) {
-            if (targetChar[i] != strToChar[i]) {
-                return false;
+        if (k > list.size()) {
+            return -1;
+        }
+        int result = 0;
+        Collections.sort(list, Collections.reverseOrder());
+        if (k == 1) {
+            result = list.get(0);
+        } else {
+            int rank = 1;
+            int previouse = list.get(0);
+            for (int i = 1; i < list.size(); i++) {
+                if (previouse > list.get(i)) {
+                    previouse = list.get(i);
+                    rank++;
+                }
+                if (rank == k) {
+                    result = list.get(i);
+                    break;
+                }
             }
         }
-        return true;
+        return result;
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        String s = bufferedReader.readLine();
-        String t = bufferedReader.readLine();
+        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
 
-        System.out.println(solution(s, t));
+        int arr[] = new int[n];
+        st = new StringTokenizer(bufferedReader.readLine());
+        for (int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+        System.out.println(solution(n, k, arr));
     }
 
 }
