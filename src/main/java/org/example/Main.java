@@ -6,35 +6,23 @@ import java.math.BigInteger;
 import java.util.*;
 
 public class Main {
-    public static int solution(int n, int k, int arr[]) {
-        ArrayList<Integer> list = new ArrayList<>();
-        for (int i = 0; i < n - 2; i++) {
-            for (int j = i + 1; j < n - 1; j++) {
-                for (int s = j + 1; s < n; s++) {
-                    list.add(arr[i] + arr[j] + arr[s]);
+    public static String solution(String input) {
+        String result = "";
+        Deque<String> dq = new ArrayDeque<>();
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) == '(') {
+                dq.add("(");
+            } else {
+                if (dq.isEmpty()) {
+                    return "NO";
                 }
+                dq.removeLast();
             }
         }
-        if (k > list.size()) {
-            return -1;
-        }
-        int result = 0;
-        Collections.sort(list, Collections.reverseOrder());
-        if (k == 1) {
-            result = list.get(0);
+        if (dq.isEmpty()) {
+            result = "YES";
         } else {
-            int rank = 1;
-            int previouse = list.get(0);
-            for (int i = 1; i < list.size(); i++) {
-                if (previouse > list.get(i)) {
-                    previouse = list.get(i);
-                    rank++;
-                }
-                if (rank == k) {
-                    result = list.get(i);
-                    break;
-                }
-            }
+            result = "NO";
         }
         return result;
     }
@@ -42,16 +30,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
-
-        int arr[] = new int[n];
-        st = new StringTokenizer(bufferedReader.readLine());
-        for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-        }
-        System.out.println(solution(n, k, arr));
+        String input = bufferedReader.readLine();
+        System.out.println(solution(input));
     }
 
 }
