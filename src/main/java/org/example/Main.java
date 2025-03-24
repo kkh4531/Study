@@ -6,23 +6,17 @@ import java.math.BigInteger;
 import java.util.*;
 
 public class Main {
-    public static String solution(String input) {
-        String result = "";
+    public static StringBuilder solution(String input) {
+        StringBuilder result = new StringBuilder();
         Deque<String> dq = new ArrayDeque<>();
         for (int i = 0; i < input.length(); i++) {
             if (input.charAt(i) == '(') {
                 dq.add("(");
-            } else {
-                if (dq.isEmpty()) {
-                    return "NO";
-                }
+            } else if (input.charAt(i) == ')') {
                 dq.removeLast();
+            } else if (dq.isEmpty()) {
+                result.append(input.charAt(i));
             }
-        }
-        if (dq.isEmpty()) {
-            result = "YES";
-        } else {
-            result = "NO";
         }
         return result;
     }
