@@ -6,31 +6,24 @@ import java.util.*;
 
 public class Main {
     public static int solution(String str) {
-        int result = 0;
-        Deque<Integer> dq = new ArrayDeque<>();
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            if (Character.isDigit(c)) { // 숫자이면
-                dq.addLast(Character.getNumericValue(c));
-            } else { // 연산자이면
-                int second = dq.pollLast();
-                int first = dq.pollLast();
-                int tempResult = 0;
-                switch (c) {
-                    case '*' :
-                        tempResult = first * second; break;
-                    case '+' :
-                        tempResult = first + second; break;
-                    case '-' :
-                        tempResult = first - second; break;
-                    case '/' :
-                        tempResult = first / second; break;
+        int cnt = 0;
+
+        Deque<Character> dq = new ArrayDeque<>();
+        dq.addLast(str.charAt(0));
+        for (int i = 1; i < str.length(); i++) {
+            if (str.charAt(i) == '(') {
+                dq.addLast('(');
+            } else { // )
+                if (str.charAt(i - 1) == '(') { // 레이저
+                    dq.removeLast();
+                    cnt += dq.size();
+                } else { // 쇠막대기의 끝
+                    dq.removeLast();
+                    cnt++;
                 }
-                dq.addLast(tempResult);
             }
         }
-        result = dq.poll();
-        return result;
+        return cnt;
     }
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
