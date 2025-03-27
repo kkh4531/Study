@@ -5,32 +5,28 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    public static int solution(String str) {
-        int cnt = 0;
-
-        Deque<Character> dq = new ArrayDeque<>();
-        dq.addLast(str.charAt(0));
-        for (int i = 1; i < str.length(); i++) {
-            if (str.charAt(i) == '(') {
-                dq.addLast('(');
-            } else { // )
-                if (str.charAt(i - 1) == '(') { // 레이저
-                    dq.removeLast();
-                    cnt += dq.size();
-                } else { // 쇠막대기의 끝
-                    dq.removeLast();
-                    cnt++;
-                }
-            }
+    public static int solution(int n, int k) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int i = 1; i <= n; i++) {
+            dq.addLast(i);
         }
-        return cnt;
+        while (dq.size() != 1) {
+            for (int i = 0; i < k - 1; i++) {
+                dq.addLast(dq.pollFirst());
+            }
+            dq.removeFirst();
+        }
+        return dq.poll();
     }
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        String str = bufferedReader.readLine();
+        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
 
-        System.out.println(solution(str));
+        int n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
+
+        System.out.println(solution(n, k));
     }
 
 }
