@@ -5,28 +5,28 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    public static int solution(int n, int k) {
-        Deque<Integer> dq = new ArrayDeque<>();
-        for (int i = 1; i <= n; i++) {
-            dq.addLast(i);
+    public static String solution(String target, String lectures) {
+        Queue<Character> queue = new ArrayDeque<>();
+        for (int i = 0; i < target.length(); i++) {
+            queue.add(target.charAt(i));
         }
-        while (dq.size() != 1) {
-            for (int i = 0; i < k - 1; i++) {
-                dq.addLast(dq.pollFirst());
+        for (int i = 0; i < lectures.length(); i++) {
+            if (lectures.charAt(i) == queue.peek()) {
+                queue.poll();
             }
-            dq.removeFirst();
+            if (queue.isEmpty()) {
+                return "YES";
+            }
         }
-        return dq.poll();
+        return "NO";
     }
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
+        String target = bufferedReader.readLine();
+        String lectures = bufferedReader.readLine();
 
-        int n = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
-
-        System.out.println(solution(n, k));
+        System.out.println(solution(target, lectures));
     }
 
 }
