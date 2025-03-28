@@ -5,50 +5,36 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    public static int solution(int n, int m, LinkedList<int[]> list) {
-        int result = 0;
-        int cnt = 1;
-        while (true) {
-            int max = list.peek()[0];
-            int maxPos = 0;
-            for (int i = 1; i < list.size(); i++) {
-                if (list.get(i)[0] > max) {
-                    max = list.get(i)[0];
-                    maxPos = i;
+    public static StringBuilder solution(int n, int arr[]) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            int min = arr[i];
+            int minIdx = i;
+            for (int j = i + 1; j < n; j++) {
+                if (arr[j] < min) {
+                    min = arr[j];
+                    minIdx = j;
                 }
             }
-            for (int i = 0; i < maxPos; i++) {
-                list.add(list.poll());
-            }
-            int first[] = list.poll();
-            if (first[1] == 1) {
-                result = cnt;
-                break;
-            }
-            cnt++;
+            int temp = arr[i];
+            arr[i] = arr[minIdx];
+            arr[minIdx] = temp;
+            sb.append(arr[i]).append(" ");
         }
-        return result;
+        return sb;
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(bufferedReader.readLine());
 
-        st = new StringTokenizer(bufferedReader.readLine());
-        LinkedList<int[]> list = new LinkedList<>();
+        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
+        int arr[] = new int[n];
         for (int i = 0; i < n; i++) {
-            if (i == m) {
-                int temp[] = {Integer.parseInt(st.nextToken()), 1};
-                list.add(temp);
-            } else {
-                int temp[] = {Integer.parseInt(st.nextToken()), 0};
-                list.add(temp);
-            }
+            arr[i] = Integer.parseInt(st.nextToken());
         }
-        System.out.println(solution(n, m, list));
+        System.out.println(solution(n, arr));
     }
 
 }
