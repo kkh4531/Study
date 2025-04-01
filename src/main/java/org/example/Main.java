@@ -7,18 +7,16 @@ import java.util.*;
 public class Main {
     public static StringBuilder solution(int n, int arr[]) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < n; i++) {
-            int min = arr[i];
-            int minIdx = i;
-            for (int j = i + 1; j < n; j++) {
-                if (arr[j] < min) {
-                    min = arr[j];
-                    minIdx = j;
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = 0; j < i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
                 }
             }
-            int temp = arr[i];
-            arr[i] = arr[minIdx];
-            arr[minIdx] = temp;
+        }
+        for (int i = 0; i < n; i++) {
             sb.append(arr[i]).append(" ");
         }
         return sb;
@@ -29,8 +27,8 @@ public class Main {
 
         int n = Integer.parseInt(bufferedReader.readLine());
 
-        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
         int arr[] = new int[n];
+        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
         for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
