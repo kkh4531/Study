@@ -6,36 +6,51 @@ import java.math.BigInteger;
 import java.util.*;
 
 public class Main {
-    public static int solution(int n, int t, int arr[]) {
-        Arrays.sort(arr);
-        int res = 0;
-        int lt = 0;
-        int rt = n - 1;
-        while (lt <= rt) {
-            int mid = (rt + lt) / 2;
-            if (arr[mid] == t) {
-                res = mid + 1;
-                break;
-            } else if (arr[mid] > t) {
-                rt = mid - 1;
-            } else {
-                lt = mid + 1;
-            }
-        }
-        return res;
-    }
-
+    static int n;
+    static int m;
+    static int arr[];
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int t = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
         st = new StringTokenizer(bufferedReader.readLine());
-        int arr[] = new int[n];
+        arr = new int[n];
         for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
-        System.out.println(solution(n, t, arr));
+        System.out.println(solution());
+    }
+    public static int solution() {
+        int result = 0;
+        int lt = arr[n - 1];
+        int rt = 0;
+        for (int i = 0; i < n; i++) {
+            rt += arr[i];
+        }
+        while (lt <= rt) {
+            int mid = (lt + rt) / 2;
+            if (func(mid)) { // m 이하이면
+                result = mid;
+                rt = mid - 1;
+            } else { // m 초과이면
+                lt = mid + 1;
+            }
+        }
+        return result;
+    }
+    public static boolean func(int t) {
+        int sum = 0;
+        int cnt = 0;
+        for (int i = 0; i < n; i++) {
+            sum += arr[i];
+            if (sum > t) {
+                sum = arr[i];
+                cnt++;
+            }
+        }
+        cnt++;
+        return cnt <= m;
     }
 }
