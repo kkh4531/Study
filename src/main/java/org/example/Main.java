@@ -2,54 +2,43 @@ package org.example;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
 import java.util.*;
 
+class Node {
+    int data;
+    Node rt, lt;
+
+    public Node(int data) {
+        this.data = data;
+    }
+}
+
 public class Main {
-    static int n;
-    static int c;
-    static int arr[];
+    public static StringBuilder sb = new StringBuilder();
+    public static boolean[] visit;
+    public static int n;
+    public static void dfs(int L) {
+        if (L >= n + 1) {
+            for (int i = 1; i < visit.length; i++) {
+                if (visit[i]) {
+                    sb.append(i).append(" ");
+                }
+            }
+            sb.append('\n');
+            return;
+        } else {
+            visit[L] = true;
+            dfs(L + 1);
+            visit[L] = false;
+            dfs(L + 1);
+        }
+    }
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-
-        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
-        n = Integer.parseInt(st.nextToken());
-        c = Integer.parseInt(st.nextToken());
-        st = new StringTokenizer(bufferedReader.readLine());
-        arr = new int[n];
-        for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-        }
-        Arrays.sort(arr);
-        System.out.println(solution());
-    }
-
-    public static int solution() {
-        int result = 0;
-        int lt = 1;
-        int rt = arr[n - 1] - 1;
-        while (lt <= rt) {
-            int mid = (lt + rt) / 2;
-            if (func(mid)) { // true = cnt >= c;
-                result = mid;
-                lt = mid + 1;
-            } else {
-                rt = mid - 1;
-            }
-        }
-        return result;
-    }
-
-    public static boolean func(int d) {
-        int cnt = 1;
-        int ep = arr[0];
-        for (int i = 1; i < n; i++) {
-            if (arr[i] - ep >= d) {
-                cnt++;
-                ep = arr[i];
-            }
-        }
-        return cnt >= c;
+        n = Integer.parseInt(bufferedReader.readLine());
+        visit = new boolean[n + 1];
+        dfs(1);
+        System.out.println(sb);
     }
 }
