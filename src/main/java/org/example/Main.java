@@ -7,14 +7,17 @@ import java.util.*;
 public class Main {
     static int n;
     static int input[];
+    static String res = "NO";
     static int sum = 0;
-    static int c;
-    static int max = Integer.MIN_VALUE;
-
+    static int total;
+    static boolean flag = false;
     public static void dfs(int depth) {
+        if (flag) return;
         if (depth == n) {
-            if (sum <= c) {
-                max = Math.max(sum, max);
+            int tmp = total - sum;
+            if (tmp == sum) {
+                res = "YES";
+                flag = true;
             }
             return;
         }
@@ -26,15 +29,15 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        n = Integer.parseInt(bufferedReader.readLine());
         StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
-        c = Integer.parseInt(st.nextToken());
-        n = Integer.parseInt(st.nextToken());
         input = new int[n];
         for (int i = 0; i < n; i++) {
-            int tmp = Integer.parseInt(bufferedReader.readLine());
+            int tmp = Integer.parseInt(st.nextToken());
             input[i] = tmp;
+            total += tmp;
         }
         dfs(0);
-        System.out.println(max);
+        System.out.println(res);
     }
 }
