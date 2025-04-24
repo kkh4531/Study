@@ -7,37 +7,42 @@ import java.util.*;
 public class Main {
     static int n;
     static int input[];
-    static String res = "NO";
-    static int sum = 0;
-    static int total;
-    static boolean flag = false;
+    static int grade = 0;
+    static int m;
+    static int max = Integer.MIN_VALUE;
+    static int time = 0;
+    static HashMap<Integer, Integer> map;
+
     public static void dfs(int depth) {
-        if (flag) return;
         if (depth == n) {
-            int tmp = total - sum;
-            if (tmp == sum) {
-                res = "YES";
-                flag = true;
+            if (time <= m) { // time이 m이하이면
+                max = Math.max(grade, max);
             }
             return;
         }
-        sum += input[depth];
+        grade += input[depth];
+        time += map.get(input[depth]);
         dfs(depth + 1);
-        sum -= input[depth];
+        grade -= input[depth];
+        time -= map.get(input[depth]);
         dfs(depth + 1);
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        n = Integer.parseInt(bufferedReader.readLine());
         StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
         input = new int[n];
+        map = new HashMap<>();
         for (int i = 0; i < n; i++) {
-            int tmp = Integer.parseInt(st.nextToken());
-            input[i] = tmp;
-            total += tmp;
+            st = new StringTokenizer(bufferedReader.readLine());
+            int score = Integer.parseInt(st.nextToken());
+            int time = Integer.parseInt(st.nextToken());
+            input[i] = score;
+            map.put(score, time);
         }
         dfs(0);
-        System.out.println(res);
+        System.out.println(max);
     }
 }
