@@ -5,44 +5,45 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    static int n;
-    static int input[];
-    static int grade = 0;
-    static int m;
-    static int max = Integer.MIN_VALUE;
-    static int time = 0;
-    static HashMap<Integer, Integer> map;
 
-    public static void dfs(int depth) {
-        if (depth == n) {
-            if (time <= m) { // time이 m이하이면
-                max = Math.max(grade, max);
-            }
-            return;
+    static int arr[];
+    static boolean visit[] = new boolean[501];
+    public static int bfs(int n, int t) {
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            q.offer(arr[i]);
+            visit[arr[i]] = true;
         }
-        grade += input[depth];
-        time += map.get(input[depth]);
-        dfs(depth + 1);
-        grade -= input[depth];
-        time -= map.get(input[depth]);
-        dfs(depth + 1);
+        int L = 1;
+        while (!q.isEmpty()) {
+            int len = q.size();
+            for (int i = 0; i < len; i++) {
+                int cv = q.poll();
+                if (cv == t) {
+                    return L;
+                } else {
+                    for (int j = 0; j < arr.length; j++) {
+                        if (!visit[cv + arr[j]]) {
+                            q.offer(cv + arr[j]);
+                            visit[cv + arr[j]] = true;
+                        }
+                    }
+                }
+            }
+            L++;
+        }
+        return 0;
     }
-
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+        int n = Integer.parseInt(bufferedReader.readLine());
         StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-        input = new int[n];
-        map = new HashMap<>();
+        arr = new int[n];
         for (int i = 0; i < n; i++) {
-            st = new StringTokenizer(bufferedReader.readLine());
-            int score = Integer.parseInt(st.nextToken());
-            int time = Integer.parseInt(st.nextToken());
-            input[i] = score;
-            map.put(score, time);
+            arr[i] = Integer.parseInt(st.nextToken());
         }
-        dfs(0);
-        System.out.println(max);
+        int t = Integer.parseInt(bufferedReader.readLine());
+        System.out.println(bfs(n, t));
     }
 }
