@@ -5,33 +5,22 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    static int[] b, p, ch;
-    static int n, f;
-    static boolean flag = false;
-    static int[][] dy = new int[35][35];
+    static int dx[] = {-1, 0, 1, 0}; // 12, 3, 6, 9
+    static int dy[] = {0, 1, 0, -1}; // 12 3 6 9
+    static int cnt = 0;
+    static int board[][];
 
-    public static int combi(int n, int r) {
-        if (dy[n][r] > 0) return dy[n][r];
-        if (n == r || r == 0) return 1;
-        else return dy[n][r] = combi(n - 1, r - 1) + combi(n - 1, r);
-    }
-
-    public static void dfs(int L, int sum) {
-        if (flag) {
-            return;
-        }
-        if (L == n) {
-            if (sum == f) {
-                for (int x : p) System.out.print(x + " ");
-                flag = true;
-            }
+    public static void dfs(int x, int y) {
+        if (x == 7 && y == 7) {
+            cnt++;
         } else {
-            for (int i = 1; i <= n; i++) {
-                if (ch[i] == 0) {
-                    ch[i] = 1;
-                    p[L] = i;
-                    dfs(L + 1, sum + (p[L] * b[L]));
-                    ch[i] = 0;
+            for (int i = 0; i < 4; i++) {
+                int nx = x + dx[i]; // 12 -> 3 -> 6 -> 9 순으로 순회
+                int ny = y + dy[i];
+                if (nx >= 1 && nx <= 7 && ny >= 1 && ny <= 7 && board[nx][ny] == 0) { // nx, ny가 보드 좌표를 넘어가지 않고 다음 좌표가 벽이 아니면 이동
+                    board[nx][ny] = 1;
+                    dfs(nx, ny);
+                    board[nx][ny] = 0; // 갔다왔으면 다시 체크 해제
                 }
             }
         }
@@ -39,15 +28,16 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
-        n = Integer.parseInt(st.nextToken());
-        f = Integer.parseInt(st.nextToken());
-        b = new int[n];
-        p = new int[n];
-        ch = new int[n + 1];
-        for (int i = 0; i < n; i++) {
-            b[i] = combi(n - 1, i);
+        board = new int[8][8];
+        StringTokenizer st;
+        for (int i = 1; i <= 7; i++) {
+            st = new StringTokenizer(bufferedReader.readLine());
+            for (int j = 1; j < 8; j++) {
+                board[i][j] = Integer.parseInt(st.nextToken());
+            }
         }
-        dfs(0, 0);
+        board[1][1] = 1;
+        dfs(1, 1);
+        System.out.println(cnt);
     }
 }
