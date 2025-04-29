@@ -5,54 +5,49 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
+    static int[] b, p, ch;
+    static int n, f;
+    static boolean flag = false;
+    static int[][] dy = new int[35][35];
 
-//    static int arr[];
-//    static boolean visit[] = new boolean[501];
-//    public static int bfs(int n, int t) {
-//        Queue<Integer> q = new LinkedList<>();
-//        for (int i = 0; i < n; i++) {
-//            q.offer(arr[i]);
-//            visit[arr[i]] = true;
-//        }
-//        int L = 1;
-//        while (!q.isEmpty()) {
-//            int len = q.size();
-//            for (int i = 0; i < len; i++) {
-//                int cv = q.poll();
-//                if (cv == t) {
-//                    return L;
-//                } else {
-//                    for (int j = 0; j < arr.length; j++) {
-//                        if (!visit[cv + arr[j]]) {
-//                            q.offer(cv + arr[j]);
-//                            visit[cv + arr[j]] = true;
-//                        }
-//                    }
-//                }
-//            }
-//            L++;
-//        }
-//        return 0;
-//    }
-    static int arr[][];
-    public static int dfs(int n, int r) {
-        if (r == 0 || n == r) {
-            return 1;
+    public static int combi(int n, int r) {
+        if (dy[n][r] > 0) return dy[n][r];
+        if (n == r || r == 0) return 1;
+        else return dy[n][r] = combi(n - 1, r - 1) + combi(n - 1, r);
+    }
+
+    public static void dfs(int L, int sum) {
+        if (flag) {
+            return;
+        }
+        if (L == n) {
+            if (sum == f) {
+                for (int x : p) System.out.print(x + " ");
+                flag = true;
+            }
         } else {
-            if (arr[n][r] != 0) {
-                return arr[n][r];
-            } else {
-                return arr[n][r] = dfs(n - 1, r - 1) + dfs(n - 1, r);
+            for (int i = 1; i <= n; i++) {
+                if (ch[i] == 0) {
+                    ch[i] = 1;
+                    p[L] = i;
+                    dfs(L + 1, sum + (p[L] * b[L]));
+                    ch[i] = 0;
+                }
             }
         }
     }
+
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-
         StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int r = Integer.parseInt(st.nextToken());
-        arr = new int[n + 1][r + 1];
-        System.out.println(dfs(n, r));
+        n = Integer.parseInt(st.nextToken());
+        f = Integer.parseInt(st.nextToken());
+        b = new int[n];
+        p = new int[n];
+        ch = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            b[i] = combi(n - 1, i);
+        }
+        dfs(0, 0);
     }
 }
