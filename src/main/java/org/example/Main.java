@@ -7,25 +7,31 @@ import java.util.*;
 public class Main {
     static int dx[] = {-1, 0, 1, 0}; // 12, 3, 6, 9
     static int dy[] = {0, 1, 0, -1}; // 12 3 6 9
-    static int cnt = 0;
     static int board[][];
+    static int dis[][];
 
-    public static void dfs(int x, int y) {
-        if (x == 7 && y == 7) {
-            cnt++;
-        } else {
-            for (int i = 0; i < 4; i++) {
-                int nx = x + dx[i]; // 12 -> 3 -> 6 -> 9 순으로 순회
-                int ny = y + dy[i];
-                if (nx >= 1 && nx <= 7 && ny >= 1 && ny <= 7 && board[nx][ny] == 0) { // nx, ny가 보드 좌표를 넘어가지 않고 다음 좌표가 벽이 아니면 이동
-                    board[nx][ny] = 1;
-                    dfs(nx, ny);
-                    board[nx][ny] = 0; // 갔다왔으면 다시 체크 해제
+    public static void bfs(int initX, int initY) {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{initX, initY});
+        dis[1][1] = 0;
+        while (!queue.isEmpty()) {
+            int len = queue.size();
+            for (int i = 0; i < len; i++) {
+                int tmp[] = queue.poll();
+                int x = tmp[0];
+                int y = tmp[1];
+                for (int j = 0; j < 4; j++) {
+                    int nx = x + dx[j];
+                    int ny = y + dy[j];
+                    if (nx >= 1 && nx <= 7 && ny >= 1 && ny <= 7 && board[nx][ny] == 0) {
+                        board[nx][ny] = 1;
+                        dis[nx][ny] = dis[x][y] + 1;
+                        queue.offer(new int[]{nx, ny});
+                    }
                 }
             }
         }
     }
-
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         board = new int[8][8];
@@ -37,7 +43,12 @@ public class Main {
             }
         }
         board[1][1] = 1;
-        dfs(1, 1);
-        System.out.println(cnt);
+        dis = new int[8][8];
+        bfs(1 ,1);
+        if (dis[7][7] == 0) {
+            System.out.println(-1);
+        } else {
+            System.out.println(dis[7][7]);
+        }
     }
 }
