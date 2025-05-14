@@ -6,51 +6,67 @@ import java.util.*;
 
 public class Main {
 
-    static boolean visit[][];
-    static int board[][];
     static int n;
-    static int dy[] = {-1, -1, 0, 1, 1, 1, 0, -1};
-    static int dx[] = {0, 1, 1, 1, 0, -1, -1, -1};
-    static int cnt = 0;
+    static int arr[];
+    static int m;
+    static ArrayList<int[]> house;
+    static ArrayList<int[]> pizza;
+    static int len;
+    static PriorityQueue<Integer> pq;
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        n = Integer.parseInt(bufferedReader.readLine());
-        board = new int[n + 1][n + 1];
-        visit = new boolean[n + 1][n + 1];
+        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        arr = new int[m];
 
-        StringTokenizer st;
-        for (int i = 1; i <= n; i++) {
+        house = new ArrayList<>();
+        pizza = new ArrayList<>();
+        pq = new PriorityQueue<>();
+
+        for (int i = 0; i < n; i++) {//행
             st = new StringTokenizer(bufferedReader.readLine());
-            for (int j = 1; j <= n; j++) {
-                board[i][j] = Integer.parseInt(st.nextToken());
-            }
-        }
-
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= n; j++) {
-                if (board[i][j] == 1 && !visit[i][j]) {
-                    visit[i][j] = true;
-                    dfs(i, j);
-                    cnt++;
-                    i = 1;
-                    j = 1;
+            for (int j = 0; j < n; j++) {//열
+                int tmp = Integer.parseInt(st.nextToken());
+                if (tmp == 1) {
+                    house.add(new int[]{i, j});
+                } else if (tmp == 2) {
+                    pizza.add(new int[]{i, j});
                 }
             }
         }
-
-        System.out.println(cnt);
+        len = pizza.size();
+        dfs(0, 0);
+        System.out.println(pq.poll());
     }
 
-    public static void dfs(int cy, int cx) {
-        for (int i = 0; i < 8; i++) {
-            int ny = cy + dy[i];
-            int nx = cx + dx[i];
-            if (nx >= 1 && nx <= n && ny >= 1 && ny <= n && board[ny][nx] == 1 && !visit[ny][nx]) {
-                visit[ny][nx] = true;
-                dfs(ny, nx);
+    public static void dfs(int depth, int at) {
+        if (depth == m) {
+            pq.offer(sum());
+        } else {
+            for (int i = at; i < len; i++) {
+                arr[depth] = i;
+                dfs(depth + 1, i + 1);
             }
         }
+    }
+
+    public static int sum() {
+        int sum = 0;
+        int size = house.size();
+        for (int i = 0; i < size; i++) {
+            int getHouse[] = house.get(i);
+            int min = Integer.MAX_VALUE;
+            for (int j = 0; j < m; j++) {
+                int tmp[] = pizza.get(arr[j]);
+                int y = getHouse[0] - tmp[0];
+                int x = getHouse[1] - tmp[1];
+                min = Math.min(min, Math.abs(y) + Math.abs(x));
+            }
+            sum += min;
+        }
+        return sum;
     }
 }
