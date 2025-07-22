@@ -6,27 +6,23 @@ import java.util.*;
 
 public class Main {
 
-    static int cnt = 0;
+    static int dp[];
 
-    public static void dfs(int sum, int n) {
-        int[] arr = {1, 2};
-        for (int i = 0; i < arr.length; i++) {
-            sum += arr[i];
-            if (sum == n) {
-                cnt++;
-                sum -= arr[i];
-            } else {
-                if (sum < n) dfs(sum, n);
-                sum -= arr[i];
-            }
+    public static int solution(int n) {
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 2] + dp[i - 1];
         }
+        return dp[n] + dp[n - 1];
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         int n = Integer.parseInt(bufferedReader.readLine());
-        dfs(0, n);
-        System.out.println(cnt);
+
+        dp = new int[n + 1];
+        System.out.print(solution(n));
     }
 }
