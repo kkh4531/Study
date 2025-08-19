@@ -6,23 +6,45 @@ import java.util.*;
 
 public class Main {
 
-    static int dp[];
+    static class Wedding implements Comparable<Wedding> {
+        int start;
+        int type;
 
-    public static int solution(int n) {
-        dp[1] = 1;
-        dp[2] = 2;
-        for (int i = 3; i <= n; i++) {
-            dp[i] = dp[i - 2] + dp[i - 1];
+        public Wedding(int start, int type) {
+            this.start = start;
+            this.type = type;
         }
-        return dp[n] + dp[n - 1];
-    }
 
+        @Override
+        public int compareTo(Wedding o) {
+            if (start == o.start) return type - o.type;
+            return start - o.start;
+        }
+    }
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         int n = Integer.parseInt(bufferedReader.readLine());
 
-        dp = new int[n + 1];
-        System.out.print(solution(n));
+        ArrayList<Wedding> list = new ArrayList<>();
+        StringTokenizer st;
+        for (int i = 0; i < n; i++) {
+            st = new StringTokenizer(bufferedReader.readLine());
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
+            list.add(new Wedding(start, 1));
+            list.add(new Wedding(end, -1));
+        }
+
+        Collections.sort(list);
+        int max = Integer.MIN_VALUE;
+        int current = 0;
+        for (Wedding w : list) {
+            current += w.type;
+            max = Math.max(max, current);
+        }
+
+        System.out.print(max);
     }
+
 }
