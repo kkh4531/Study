@@ -6,45 +6,54 @@ import java.util.*;
 
 public class Main {
 
-    static class Wedding implements Comparable<Wedding> {
-        int start;
-        int type;
+    static class Lecture implements Comparable<Lecture> {
+        private int price;
+        private int days;
 
-        public Wedding(int start, int type) {
-            this.start = start;
-            this.type = type;
+        public Lecture(int price, int days) {
+            this.price = price;
+            this.days = days;
         }
 
         @Override
-        public int compareTo(Wedding o) {
-            if (start == o.start) return type - o.type;
-            return start - o.start;
+        public int compareTo(Lecture o) {
+            return o.days - this.days;
         }
     }
+
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         int n = Integer.parseInt(bufferedReader.readLine());
 
-        ArrayList<Wedding> list = new ArrayList<>();
+        Lecture lecs[] = new Lecture[n];
+
         StringTokenizer st;
+        int maxDay = Integer.MIN_VALUE;
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(bufferedReader.readLine());
-            int start = Integer.parseInt(st.nextToken());
-            int end = Integer.parseInt(st.nextToken());
-            list.add(new Wedding(start, 1));
-            list.add(new Wedding(end, -1));
+            int price = Integer.parseInt(st.nextToken());
+            int days = Integer.parseInt(st.nextToken());
+            lecs[i] = new Lecture(price, days);
+            maxDay = Math.max(maxDay, days);
         }
 
-        Collections.sort(list);
-        int max = Integer.MIN_VALUE;
-        int current = 0;
-        for (Wedding w : list) {
-            current += w.type;
-            max = Math.max(max, current);
+        Arrays.sort(lecs);
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        int res = 0;
+        int idx = 0;
+        for (int i = maxDay; i > 0; i--) {
+            for (int j = idx; j < n; j++) {
+                if (lecs[j].days == i) {
+                    pq.offer(lecs[j].price);
+                } else {
+                    idx = j;
+                    break;
+                }
+            }
+            if (!pq.isEmpty()) res += pq.poll();
         }
+        System.out.print(res);
 
-        System.out.print(max);
     }
-
 }
