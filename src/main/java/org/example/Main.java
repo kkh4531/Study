@@ -6,54 +6,43 @@ import java.util.*;
 
 public class Main {
 
-    static class Lecture implements Comparable<Lecture> {
-        private int price;
-        private int days;
-
-        public Lecture(int price, int days) {
-            this.price = price;
-            this.days = days;
-        }
-
-        @Override
-        public int compareTo(Lecture o) {
-            return o.days - this.days;
-        }
-    }
+    static int unf[];
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(bufferedReader.readLine());
+        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
 
-        Lecture lecs[] = new Lecture[n];
+        unf = new int[n + 1];
 
-        StringTokenizer st;
-        int maxDay = Integer.MIN_VALUE;
-        for (int i = 0; i < n; i++) {
+        for (int i = 1; i <= n; i++) {
+            unf[i] = i;
+        }
+
+        for (int i = 0; i < m; i++) {
             st = new StringTokenizer(bufferedReader.readLine());
-            int price = Integer.parseInt(st.nextToken());
-            int days = Integer.parseInt(st.nextToken());
-            lecs[i] = new Lecture(price, days);
-            maxDay = Math.max(maxDay, days);
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            Union(a, b);
         }
 
-        Arrays.sort(lecs);
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
-        int res = 0;
-        int idx = 0;
-        for (int i = maxDay; i > 0; i--) {
-            for (int j = idx; j < n; j++) {
-                if (lecs[j].days == i) {
-                    pq.offer(lecs[j].price);
-                } else {
-                    idx = j;
-                    break;
-                }
-            }
-            if (!pq.isEmpty()) res += pq.poll();
-        }
-        System.out.print(res);
+        st = new StringTokenizer(bufferedReader.readLine());
+        int tX = Integer.parseInt(st.nextToken());
+        int tY = Integer.parseInt(st.nextToken());
 
+        System.out.print(find(tX) != find(tY) ? "NO" : "YES");
+    }
+
+    private static void Union(int a, int b) {
+        int fa = find(a);
+        int fb = find(b);
+        if (fa != fb) unf[fa] = fb;
+    }
+
+    private static int find(int v) {
+        if (v == unf[v]) return unf[v];
+        else return unf[v] = find(unf[v]);
     }
 }
