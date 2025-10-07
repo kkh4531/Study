@@ -6,33 +6,54 @@ import java.util.*;
 
 public class Main {
 
+    static class Edge implements Comparable<Edge> {
+        int v1;
+        int v2;
+        int cost;
+
+        public Edge(int v1, int v2, int cost) {
+            this.v1 = v1;
+            this.v2 = v2;
+            this.cost = cost;
+        }
+
+        @Override
+        public int compareTo(Edge o) {
+            return this.cost - o.cost;
+        }
+    }
+
     static int unf[];
 
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
+        int v = Integer.parseInt(st.nextToken());
+        int e = Integer.parseInt(st.nextToken());
 
-        unf = new int[n + 1];
-
-        for (int i = 1; i <= n; i++) {
-            unf[i] = i;
-        }
-
-        for (int i = 0; i < m; i++) {
+        unf = new int[v + 1];
+        ArrayList<Edge> input = new ArrayList<>();
+        for (int i = 1; i <= v; i++) unf[i] = i;
+        for (int i = 0; i < e; i++) {
             st = new StringTokenizer(bufferedReader.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            Union(a, b);
+            int v1 = Integer.parseInt(st.nextToken());
+            int v2 = Integer.parseInt(st.nextToken());
+            int cost = Integer.parseInt(st.nextToken());
+            input.add(new Edge(v1, v2, cost));
         }
 
-        st = new StringTokenizer(bufferedReader.readLine());
-        int tX = Integer.parseInt(st.nextToken());
-        int tY = Integer.parseInt(st.nextToken());
-
-        System.out.print(find(tX) != find(tY) ? "NO" : "YES");
+        Collections.sort(input);
+        int sum = 0;
+        for (Edge edge : input) {
+            int fv1 = find(edge.v1);
+            int fv2 = find(edge.v2);
+            if (fv1 != fv2) {
+                sum += edge.cost;
+                Union(edge.v1, edge.v2);
+            }
+        }
+        System.out.print(sum);
     }
 
     private static void Union(int a, int b) {
