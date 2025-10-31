@@ -4,66 +4,34 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.*;
 
+
 public class Main {
-
-    static class Edge implements Comparable<Edge> {
-        int v1;
-        int v2;
-        int cost;
-
-        public Edge(int v1, int v2, int cost) {
-            this.v1 = v1;
-            this.v2 = v2;
-            this.cost = cost;
-        }
-
-        @Override
-        public int compareTo(Edge o) {
-            return this.cost - o.cost;
-        }
-    }
-
-    static int unf[];
-
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
+        int n = Integer.parseInt(bufferedReader.readLine());
+        int arr[] = new int[n];
         StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
-        int v = Integer.parseInt(st.nextToken());
-        int e = Integer.parseInt(st.nextToken());
-
-        unf = new int[v + 1];
-        ArrayList<Edge> input = new ArrayList<>();
-        for (int i = 1; i <= v; i++) unf[i] = i;
-        for (int i = 0; i < e; i++) {
-            st = new StringTokenizer(bufferedReader.readLine());
-            int v1 = Integer.parseInt(st.nextToken());
-            int v2 = Integer.parseInt(st.nextToken());
-            int cost = Integer.parseInt(st.nextToken());
-            input.add(new Edge(v1, v2, cost));
+        for (int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
         }
+        System.out.println(solution(arr));
+    }
 
-        Collections.sort(input);
-        int sum = 0;
-        for (Edge edge : input) {
-            int fv1 = find(edge.v1);
-            int fv2 = find(edge.v2);
-            if (fv1 != fv2) {
-                sum += edge.cost;
-                Union(edge.v1, edge.v2);
+    private static int solution(int[] arr) {
+        int answer = 0;
+        dy = new int[arr.length];
+        dy[0] = 1;
+        for (int i = 1; i < arr.length; i++) {
+            int max = 0;
+            for (int j = i - 1; j >= 0; j--) {
+                if (arr[j] < arr[i] && dy[j] > max) max = dy[j];
             }
+            dy[i] = max + 1;
+            answer = Math.max(answer, dy[i]);
         }
-        System.out.print(sum);
+        return answer;
     }
 
-    private static void Union(int a, int b) {
-        int fa = find(a);
-        int fb = find(b);
-        if (fa != fb) unf[fa] = fb;
-    }
-
-    private static int find(int v) {
-        if (v == unf[v]) return unf[v];
-        else return unf[v] = find(unf[v]);
-    }
+    static int dy[];
 }
